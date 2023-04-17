@@ -8,9 +8,10 @@
 import Foundation
 
 struct APIBookRating: Decodable {
-    let summary: Average?
+    let summary: Summary?
 
-    struct Average: Decodable {
+    struct Summary: Decodable {
         let average: Double?
+        let count: Int?
     }
 }

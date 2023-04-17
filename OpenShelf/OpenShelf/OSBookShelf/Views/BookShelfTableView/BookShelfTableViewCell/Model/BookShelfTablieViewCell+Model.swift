@@ -9,10 +9,12 @@ import Foundation
 
 extension BookShelfTableViewCell {
     struct Model {
+        let key: String?
         let title: String?
         let author: String?
         let coverID: Int?
         let firstPublicationYear: Int?
         let averageRating: Double?
+        let ratingsCount: Int?
     }
 }

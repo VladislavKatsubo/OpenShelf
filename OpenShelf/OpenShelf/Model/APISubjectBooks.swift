@@ -1,5 +1,5 @@
 //
-//  APIResponse.swift
+//  APISubjectBooks.swift
 //  OpenShelf
 //
 //  Created by Vlad Katsubo on 14.04.23.

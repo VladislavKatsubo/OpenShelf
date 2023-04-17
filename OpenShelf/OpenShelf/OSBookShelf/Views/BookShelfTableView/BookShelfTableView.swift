@@ -11,17 +11,28 @@ final class BookShelfTableView: OView {
 
     private enum Constants {
         static let rowHeight: CGFloat = 165.0
+        static let skeletonCellsCount: Int = 4
     }
 
-    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    private var cellModels: [BookShelfTableViewCell.Model] = []
+    private var imageManager: ImageManagerProtocol?
+
+    private let tableView = UITableView(frame: .zero, style: .plain)
+    private var cellModels: [BookShelfTableViewCell.Model] = [] {
+        didSet {
+            isRealData = true
+        }
+    }
 
     var onTap: ((BookShelfTableViewCell.Model) -> Void)?
 
+    private var isRealData: Bool = false
+
     // MARK: - Configure
-    func configure(with cellModels: [BookShelfTableViewCell.Model]) {
+    func configure(with cellModels: [BookShelfTableViewCell.Model], and imageManager: ImageManagerProtocol) {
         self.cellModels = cellModels
-        self.tableView.reloadData()
+        self.imageManager = imageManager
+        self.tableView.isUserInteractionEnabled = true
+        self.tableView.reloadDataWithAnimation()
     }
 
     // MARK: - Public methods
@@ -41,7 +52,9 @@ private extension BookShelfTableView {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
+        tableView.isUserInteractionEnabled = false
         tableView.register(BookShelfTableViewCell.self, forCellReuseIdentifier: BookShelfTableViewCell.reuseID)
+        tableView.register(BookShelfTableViewSkeletonCell.self, forCellReuseIdentifier: BookShelfTableViewSkeletonCell.reuseID)
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: topAnchor),
@@ -62,7 +75,7 @@ extension BookShelfTableView: UITableViewDelegate {
 extension BookShelfTableView: UITableViewDataSource {
     // MARK: - UITableViewDataSouce
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        cellModels.count
+        isRealData ? cellModels.count : Constants.skeletonCellsCount
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -70,17 +83,25 @@ extension BookShelfTableView: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard isRealData else {
+            guard let skeletonCell = tableView.dequeueReusableCell(
+                withIdentifier: BookShelfTableViewSkeletonCell.reuseID,
+                for: indexPath
+            ) as? BookShelfTableViewSkeletonCell else {
+                return .init()
+            }
+            return skeletonCell
+        }
+
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: BookShelfTableViewCell.reuseID,
             for: indexPath
-        ) as? BookShelfTableViewCell else {
+        ) as? BookShelfTableViewCell,
+              let imageManager = imageManager else {
             return .init()
         }
 
         let model = cellModels[indexPath.row]
-        let session = URLSession(configuration: .default)
-        let networkManager = NetworkManager(session: session)
-        let imageManager = ImageManager(networkManager: networkManager)
         let viewModel = BookShelfTableViewCellViewModel(
             model: model,
             imageManager: imageManager

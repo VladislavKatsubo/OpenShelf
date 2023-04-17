@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+struct BookDetailsModel {
+    let key: String?
+    let coverID: Int?
+    let title: String?
+    let authorName: String?
+    let firstPublishedYear: Int?
+    let averageRating: Double?
+    let ratingsCount: Int?
+}

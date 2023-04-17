@@ -23,6 +23,9 @@ final class BookShelfTableViewCell: UITableViewCell {
         static let coverImageViewBottomInset: CGFloat = -20.0
         static let coverImageViewWidth: CGFloat = 90.0
         static let coverImageViewHeight: CGFloat = 130.0
+
+        static let containerViewHeight: CGFloat = 120.0
+        static let containerViewBottomInset: CGFloat = -15.0
     }
 
     private let containerView = OView()
@@ -37,7 +40,6 @@ final class BookShelfTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupItems()
-        setupViewModel()
     }
 
     required init?(coder: NSCoder) {
@@ -61,8 +63,7 @@ private extension BookShelfTableViewCell {
     // MARK: - Private methods
     func setupViewModel() {
         viewModel?.onFetchBookCoverImageData = { [weak self] data in
-            let image = UIImage(data: data)
-            self?.coverImageView.configure(with: image)
+            self?.coverImageView.configure(with: data)
         }
         viewModel?.onGetBookRating = { [weak self] rating in
             self?.ratingView.configure(with: rating)
@@ -89,10 +90,10 @@ private extension BookShelfTableViewCell {
         containerView.backgroundColor = .white
 
         NSLayoutConstraint.activate([
-            containerView.heightAnchor.constraint(equalToConstant: 120.0),
+            containerView.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15.0),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.containerViewBottomInset),
         ])
     }
 

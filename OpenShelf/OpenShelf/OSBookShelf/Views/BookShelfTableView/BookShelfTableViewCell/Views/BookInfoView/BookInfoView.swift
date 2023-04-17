@@ -50,7 +50,7 @@ private extension BookInfoView {
     func setupTitleLabel() {
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        titleLabel.font = Constants.titleLabelFont
+        titleLabel.font = Constants.titleLabelFont
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.numberOfLines = Constants.titleLabelNumberOfLines
 

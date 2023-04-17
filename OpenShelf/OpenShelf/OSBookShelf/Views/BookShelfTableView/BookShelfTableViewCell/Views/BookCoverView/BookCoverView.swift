@@ -10,8 +10,6 @@ import UIKit
 final class BookCoverView: OView {
 
     private enum Constants {
-        static let fontSize: CGFloat = 14.0
-        static let starImageViewLeadingOffset: CGFloat = 3.0
         static let cornerRadius: CGFloat = 10.0
 
         static let shadowColor: CGColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.45).cgColor
@@ -25,10 +23,11 @@ final class BookCoverView: OView {
     private let containerView = UIView()
 
     // MARK: - Configure
-    func configure(with image: UIImage?) {
-        guard let image = image else {
+    func configure(with imageData: Data?) {
+        guard let imageData = imageData else {
             return
         }
+        let image = UIImage(data: imageData)
         self.activityIndicator.stopAnimating()
         self.coverImageView.image = image
         setupShadowLayer()
@@ -43,7 +42,7 @@ final class BookCoverView: OView {
     func reset() {
         self.coverImageView.image = nil
         self.activityIndicator.startAnimating()
-        self.containerView.layer.shadowOpacity = 0
+        self.containerView.layer.shadowOpacity = .zero
     }
 }
 

@@ -9,8 +9,9 @@ import Foundation
 
 protocol BookShelfTableViewCellViewModelProtocol {
     var onFetchBookCoverImageData: ((Data) -> Void)? { get set }
-    var onGetBookRating: ((String) -> Void)? { get set }
+    var onGetBookRating: ((Double?) -> Void)? { get set }
     var onGetBookInfo: ((BookInfoView.Model) -> Void)? { get set }
+    
     func launch()
     func cancelImageDownload()
 }
@@ -25,7 +26,7 @@ final class BookShelfTableViewCellViewModel: BookShelfTableViewCellViewModelProt
     private var model: BookShelfTableViewCell.Model?
 
     var onFetchBookCoverImageData: ((Data) -> Void)?
-    var onGetBookRating: ((String) -> Void)?
+    var onGetBookRating: ((Double?) -> Void)?
     var onGetBookInfo: ((BookInfoView.Model) -> Void)?
 
     private var dataTask: URLSessionDataTask?
@@ -72,7 +73,7 @@ private extension BookShelfTableViewCellViewModel {
                 }
             case .failure(let failure):
                 if (failure as NSError).code == NSURLErrorCancelled {
-                    print("Prevented the wrong image from being shown by cancelling the URLSessionDataTask :)")
+                    // MARK: Prevented the wrong image from being shown by cancelling the URLSessionDataTask
                 } else {
                     print("BookShelfTableViewCellViewModel Image fetching failure", failure)
                 }
@@ -82,9 +83,7 @@ private extension BookShelfTableViewCellViewModel {
     }
 
     func processRating(with rating: Double?) {
-        guard let rating = rating else { return }
-        let processedRating = String(format: "%.2f", rating)
-        onGetBookRating?(processedRating)
+        onGetBookRating?(rating)
     }
 
     func processBookInfoViewModel(with model: BookShelfTableViewCell.Model?) {

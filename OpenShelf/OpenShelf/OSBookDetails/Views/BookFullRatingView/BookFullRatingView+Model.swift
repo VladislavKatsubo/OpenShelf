@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+extension BookFullRatingView {
+    struct Model {
+        let rating: Double?
+        let ratingsCount: Int?
+    }
+}

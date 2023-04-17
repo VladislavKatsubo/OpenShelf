@@ -25,9 +25,9 @@ final class BookRatingView: OView {
     private let starImageView = UIImageView()
 
     // MARK: - Configure
-    func configure(with rating: String?) {
+    func configure(with rating: Double?) {
         guard let rating = rating else { return }
-        self.ratingLabel.text = rating
+        self.ratingLabel.text = String(format: "%.2f", rating)
         self.starImageView.image = Constants.starImage
     }
 
