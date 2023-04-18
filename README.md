@@ -12,3 +12,5 @@ API
 
 Архитектура - MVVM.
 Постарался сделать с учетом SOLID/DI, модульности, переиспользуемости. 
+
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDIwZjNmZTdiYTcxODU3Y2Y5ZTExZDRkNjk0M2YxNDA4Mzk0ZTE2NSZjdD1n/bdgeyVccVgy1bpmngj/giphy.gif)
